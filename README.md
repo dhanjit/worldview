@@ -64,7 +64,7 @@ npm run build
 npx wrangler deploy
 ```
 
-Requires `wrangler login` under the Cloudflare account that owns the `dhanjit.me` zone. CI gates quality (typecheck + build) but does not deploy; to add deploy-on-push later, create a Cloudflare API token with Workers Scripts: Edit, store it as a `CLOUDFLARE_API_TOKEN` repo secret, and append a `wrangler deploy` job to the workflow.
+Pushes to `main` build and deploy automatically via [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/) (repo connected in the Cloudflare dashboard); non-production branches get preview URLs. Manual deploys need `wrangler login` under the Cloudflare account that owns the `dhanjit.me` zone. GitHub Actions CI gates quality (typecheck + build) but does not deploy.
 
 ## Data licensing
 
