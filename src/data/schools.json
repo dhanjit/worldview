@@ -1,0 +1,6 @@
+[
+  { "id": "real", "label": "Realist", "dot": "#d85a30", "chip": "#993c1d" },
+  { "id": "lib", "label": "Liberal internationalist", "dot": "#378add", "chip": "#185fa5" },
+  { "id": "res", "label": "Restraint", "dot": "#1d9e75", "chip": "#0f6e56" },
+  { "id": "ind", "label": "Independent analyst", "dot": "#7f77dd", "chip": "#534ab7" }
+]

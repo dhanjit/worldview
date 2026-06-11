@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ukr",
+    "frame": "us-western",
+    "type": "should",
+    "label": "Ukraine endgame",
+    "question": "How should the war in Ukraine end?",
+    "poleA": "Negotiated settlement now",
+    "poleB": "Back Kyiv to full restoration"
+  },
+  {
+    "id": "chn",
+    "frame": "us-western",
+    "type": "should",
+    "label": "China strategy",
+    "question": "How should the West approach a rising China?",
+    "poleA": "Engage and accommodate",
+    "poleB": "Contain and decouple"
+  },
+  {
+    "id": "nato",
+    "frame": "us-western",
+    "type": "should",
+    "label": "NATO enlargement",
+    "question": "Was post-Cold War NATO enlargement right?",
+    "poleA": "Destabilizing overreach",
+    "poleB": "Necessary and stabilizing"
+  },
+  {
+    "id": "twn",
+    "frame": "us-western",
+    "type": "should",
+    "label": "Taiwan",
+    "question": "What should the US commitment to Taiwan be?",
+    "poleA": "Strategic ambiguity",
+    "poleB": "Explicit defense pledge"
+  },
+  {
+    "id": "ord",
+    "frame": "us-western",
+    "type": "will",
+    "label": "World order 2030",
+    "question": "Where is the international system heading?",
+    "poleA": "Multipolar, post-American",
+    "poleB": "Renewed US-led order"
+  }
+]

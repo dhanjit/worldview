@@ -1,0 +1,74 @@
+[
+  {
+    "id": "mear",
+    "name": "John Mearsheimer",
+    "initials": "JM",
+    "school": "real",
+    "wikipedia": "https://en.wikipedia.org/wiki/John_Mearsheimer",
+    "wheels": ["us-western"]
+  },
+  {
+    "id": "alli",
+    "name": "Graham Allison",
+    "initials": "GA",
+    "school": "real",
+    "wikipedia": "https://en.wikipedia.org/wiki/Graham_Allison",
+    "wheels": ["us-western"]
+  },
+  {
+    "id": "fuku",
+    "name": "Francis Fukuyama",
+    "initials": "FF",
+    "school": "lib",
+    "wikipedia": "https://en.wikipedia.org/wiki/Francis_Fukuyama",
+    "wheels": ["us-western"]
+  },
+  {
+    "id": "appl",
+    "name": "Anne Applebaum",
+    "initials": "AA",
+    "school": "lib",
+    "wikipedia": "https://en.wikipedia.org/wiki/Anne_Applebaum",
+    "wheels": ["us-western"]
+  },
+  {
+    "id": "hill",
+    "name": "Fiona Hill",
+    "initials": "FH",
+    "school": "lib",
+    "wikipedia": "https://en.wikipedia.org/wiki/Fiona_Hill_(presidential_advisor)",
+    "wheels": ["us-western"]
+  },
+  {
+    "id": "sach",
+    "name": "Jeffrey Sachs",
+    "initials": "JS",
+    "school": "res",
+    "wikipedia": "https://en.wikipedia.org/wiki/Jeffrey_Sachs",
+    "wheels": ["us-western"]
+  },
+  {
+    "id": "mahb",
+    "name": "Kishore Mahbubani",
+    "initials": "KM",
+    "school": "res",
+    "wikipedia": "https://en.wikipedia.org/wiki/Kishore_Mahbubani",
+    "wheels": ["us-western"]
+  },
+  {
+    "id": "brem",
+    "name": "Ian Bremmer",
+    "initials": "IB",
+    "school": "ind",
+    "wikipedia": "https://en.wikipedia.org/wiki/Ian_Bremmer",
+    "wheels": ["us-western"]
+  },
+  {
+    "id": "ferg",
+    "name": "Niall Ferguson",
+    "initials": "NF",
+    "school": "ind",
+    "wikipedia": "https://en.wikipedia.org/wiki/Niall_Ferguson",
+    "wheels": ["us-western"]
+  }
+]
