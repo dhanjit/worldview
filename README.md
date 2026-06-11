@@ -55,13 +55,16 @@ scripts/extract.mjs  Wikipedia → Claude → claim records
 docs/DESIGN.md       methodology, rubrics, roadmap
 ```
 
-## Deploy (Cloudflare Pages)
+## Deploy (Cloudflare Workers, static assets)
 
-1. Cloudflare dashboard → Workers & Pages → Create → Pages → **Connect to Git** → pick this repo.
-2. Build command `npm run build`, output directory `dist` (framework preset: Vite or None).
-3. After the first deploy: Custom domains → add `worldview.dhanjit.me` (the zone is already on Cloudflare, so the CNAME is created automatically).
+Live at [worldview.dhanjit.me](https://worldview.dhanjit.me). The site ships as a Worker with static assets ([wrangler.toml](wrangler.toml)); the custom domain and its DNS record are managed by the deploy itself.
 
-Every push to `main` then deploys automatically. CLI alternative: `npx wrangler pages deploy dist`.
+```sh
+npm run build
+npx wrangler deploy
+```
+
+Requires `wrangler login` under the Cloudflare account that owns the `dhanjit.me` zone. CI gates quality (typecheck + build) but does not deploy; to add deploy-on-push later, create a Cloudflare API token with Workers Scripts: Edit, store it as a `CLOUDFLARE_API_TOKEN` repo secret, and append a `wrangler deploy` job to the workflow.
 
 ## Data licensing
 
