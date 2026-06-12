@@ -22,6 +22,7 @@
  * this one env var.
  */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -29,6 +30,19 @@ try {
   process.loadEnvFile(fileURLToPath(new URL("../.env", import.meta.url)));
 } catch {
   // no .env — environment variables may still be set externally
+}
+
+// Key resolution order: explicit env var > .env (above) > Windows DPAPI vault
+// (scripts/secret.ps1, stored via `npm run secret:set` — no plaintext on disk).
+if (!process.env.OPENROUTER_API_KEY && process.platform === "win32") {
+  const r = spawnSync(
+    "powershell.exe",
+    ["-NoProfile", "-ExecutionPolicy", "Bypass",
+     "-File", fileURLToPath(new URL("./secret.ps1", import.meta.url)), "-Get"],
+    { encoding: "utf8" },
+  );
+  const v = r.status === 0 ? r.stdout.trim() : "";
+  if (v) process.env.OPENROUTER_API_KEY = v;
 }
 
 const WIKI_API = "https://en.wikipedia.org/w/api.php";
@@ -197,7 +211,7 @@ async function main() {
 
   if (!process.env.OPENROUTER_API_KEY) {
     console.log("\nOPENROUTER_API_KEY not set — stopping after the Wikipedia fetch.");
-    console.log("Set it in worldview/.env to run claim extraction.");
+    console.log("Store it with `npm run secret:set` (encrypted, recommended) or in worldview/.env.");
     return;
   }
 

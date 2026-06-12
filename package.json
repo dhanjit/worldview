@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "extract": "node scripts/extract.mjs"
+    "extract": "node scripts/extract.mjs",
+    "secret:set": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/secret.ps1 -Set",
+    "secret:clear": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/secret.ps1 -Clear"
   },
   "dependencies": {
     "openai": "^6.42.0",

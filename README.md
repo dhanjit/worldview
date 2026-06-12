@@ -23,7 +23,8 @@ npm run dev
 | `npm run build` | Production build to `dist/` |
 | `npm run preview` | Serve the production build locally |
 | `npm run typecheck` | TypeScript, strict mode |
-| `npm run extract -- "John Mearsheimer"` | Fetch an expert's Wikipedia views sections; with `OPENROUTER_API_KEY` set, extract claim records to `data/extracted/` (model via `EXTRACT_MODEL`, default `anthropic/claude-opus-4.8`) |
+| `npm run extract -- "John Mearsheimer"` | Fetch an expert's Wikipedia views sections; with `OPENROUTER_API_KEY` available, extract claim records to `data/extracted/` (model via `EXTRACT_MODEL`, default `anthropic/claude-opus-4.8`) |
+| `npm run secret:set` / `secret:clear` | Store/remove `OPENROUTER_API_KEY` encrypted at rest (Windows DPAPI, CurrentUser) — no plaintext file. Key resolution: env var → `.env` → DPAPI vault |
 
 ## How it works
 
