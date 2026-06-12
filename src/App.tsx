@@ -2,25 +2,54 @@ import { useState } from "react";
 import Wheel from "./components/Wheel";
 import TopicPanel from "./components/TopicPanel";
 import ComparePanel from "./components/ComparePanel";
-import { schools } from "./lib/data";
+import { frames, schoolsFor } from "./lib/data";
+
+const DEFAULTS: Record<string, { topic: string; expert: string }> = {
+  india: { topic: "chn-in", expert: "chel" },
+  "us-western": { topic: "ukr", expert: "mear" },
+};
 
 export default function App() {
-  const [topicId, setTopicId] = useState("ukr");
-  const [expertId, setExpertId] = useState("mear");
+  const [frameId, setFrameId] = useState("india");
+  const [topicId, setTopicId] = useState(DEFAULTS.india.topic);
+  const [expertId, setExpertId] = useState(DEFAULTS.india.expert);
+  const frame = frames.find((f) => f.id === frameId)!;
+
+  function switchFrame(id: string) {
+    if (id === frameId) return;
+    setFrameId(id);
+    setTopicId(DEFAULTS[id].topic);
+    setExpertId(DEFAULTS[id].expert);
+  }
 
   return (
     <div className="app">
       <header className="header">
         <div>
           <h1>Worldview</h1>
-          <p className="tagline">
-            Where public experts stand on the big questions — with receipts
-          </p>
+          <p className="tagline">{frame.tagline}</p>
         </div>
         <span className="badge badge-warn">pre-alpha · illustrative data</span>
       </header>
 
+      <div className="chips" style={{ margin: "10px 0 4px" }}>
+        {frames.map((f) => (
+          <button
+            key={f.id}
+            className={`chip${f.id === frameId ? " active" : ""}`}
+            onClick={() => switchFrame(f.id)}
+            aria-pressed={f.id === frameId}
+          >
+            {f.label}
+          </button>
+        ))}
+        <span className="cmp-note" style={{ alignSelf: "center" }}>
+          a perspective is its own wheel — own questions, own roster
+        </span>
+      </div>
+
       <Wheel
+        frameId={frameId}
         topicId={topicId}
         expertId={expertId}
         onSelect={(t, e) => {
@@ -30,7 +59,7 @@ export default function App() {
       />
 
       <div className="legend">
-        {schools.map((s) => (
+        {schoolsFor(frameId).map((s) => (
           <span key={s.id} className="legend-item">
             <span className="swatch" style={{ background: s.dot }} />
             {s.label}
@@ -43,13 +72,14 @@ export default function App() {
       </p>
 
       <TopicPanel
+        frameId={frameId}
         topicId={topicId}
         expertId={expertId}
         onTopic={setTopicId}
         onExpert={setExpertId}
       />
 
-      <ComparePanel />
+      <ComparePanel key={frameId} frameId={frameId} />
 
       <footer className="footer">
         All positions are hand-scored placeholders for now — after extraction

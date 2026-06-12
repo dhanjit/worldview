@@ -1,15 +1,16 @@
-import { claimFor, expertById, experts, schoolById, topicById, topics } from "../lib/data";
+import { claimFor, expertById, expertsFor, schoolById, topicById, topicsFor } from "../lib/data";
 
 interface Props {
+  frameId: string;
   topicId: string;
   expertId: string;
   onTopic: (id: string) => void;
   onExpert: (id: string) => void;
 }
 
-export default function TopicPanel({ topicId, expertId, onTopic, onExpert }: Props) {
+export default function TopicPanel({ frameId, topicId, expertId, onTopic, onExpert }: Props) {
   const topic = topicById[topicId];
-  const rows = experts
+  const rows = expertsFor(frameId)
     .map((e) => ({ expert: e, claim: claimFor(e.id, topicId) }))
     .filter((r) => r.claim && r.claim.score != null)
     .sort((a, b) => a.claim!.score! - b.claim!.score!);
@@ -20,7 +21,7 @@ export default function TopicPanel({ topicId, expertId, onTopic, onExpert }: Pro
   return (
     <section className="card">
       <div className="chips">
-        {topics.map((t) => (
+        {topicsFor(frameId).map((t) => (
           <button
             key={t.id}
             className={`chip${t.id === topicId ? " active" : ""}`}
@@ -61,7 +62,14 @@ export default function TopicPanel({ topicId, expertId, onTopic, onExpert }: Pro
         })}
       </div>
 
-      {selected && selectedExpert && (
+      {rows.length < expertsFor(frameId).length && (
+        <p className="receipt-meta" style={{ marginBottom: 10 }}>
+          {expertsFor(frameId).length - rows.length} expert(s) have no indexed
+          position on this axis — silence is data, not something we invent.
+        </p>
+      )}
+
+      {selected && selectedExpert ? (
         <div className="receipt">
           <div className="receipt-head">
             <span className="receipt-name">{selectedExpert.name}</span>
@@ -86,6 +94,13 @@ export default function TopicPanel({ topicId, expertId, onTopic, onExpert }: Pro
             · retrieved {selected.retrievedOn} · status: {selected.status}
             {selected.quote == null ? " (no verbatim quote yet)" : ""}
           </div>
+        </div>
+      ) : (
+        <div className="receipt">
+          <p className="receipt-summary" style={{ margin: 0 }}>
+            {selectedExpert?.name ?? "This expert"} has no indexed position on
+            this axis yet.
+          </p>
         </div>
       )}
     </section>

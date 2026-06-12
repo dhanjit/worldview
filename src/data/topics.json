@@ -43,5 +43,50 @@
     "question": "Where is the international system heading?",
     "poleA": "Multipolar, post-American",
     "poleB": "Renewed US-led order"
+  },
+  {
+    "id": "chn-in",
+    "frame": "india",
+    "type": "should",
+    "label": "China posture",
+    "question": "How should India handle China?",
+    "poleA": "Stabilize and engage",
+    "poleB": "Confront and decouple"
+  },
+  {
+    "id": "usa-in",
+    "frame": "india",
+    "type": "should",
+    "label": "US alignment",
+    "question": "How closely should India align with the United States?",
+    "poleA": "Strategic autonomy, multi-align",
+    "poleB": "Deep formal alignment"
+  },
+  {
+    "id": "econ-in",
+    "frame": "india",
+    "type": "should",
+    "label": "Economic model",
+    "question": "What growth model should India pursue?",
+    "poleA": "State-led, welfare-first",
+    "poleB": "Liberalize, privatize, open up"
+  },
+  {
+    "id": "inst-in",
+    "frame": "india",
+    "type": "is",
+    "label": "Institutions",
+    "question": "Are India's checks and balances holding?",
+    "poleA": "Eroding seriously",
+    "poleB": "Robust and self-correcting"
+  },
+  {
+    "id": "traj-in",
+    "frame": "india",
+    "type": "will",
+    "label": "India 2035",
+    "question": "Where is India heading by 2035?",
+    "poleA": "Middle-income drift",
+    "poleB": "Confident great power"
   }
 ]

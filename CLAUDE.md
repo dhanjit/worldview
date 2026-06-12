@@ -2,7 +2,9 @@
 
 ## What this is
 
-Worldview — a public site mapping named geopolitics experts' positions onto comparable axes, rendered as an opinion wheel with per-topic spectra, receipts, and side-by-side comparison. Pre-alpha; all seed data is hand-scored and labeled `illustrative`. Target host: worldview.dhanjit.me (Cloudflare Pages, auto-deploy from `main`).
+Worldview — a public site mapping named experts' positions onto comparable axes, rendered as an opinion wheel with per-topic spectra, receipts, and side-by-side comparison. **Centered on Indian politics**: the `india` frame is the default wheel (national blend — governance, economy, institutions, strategic posture); `us-western` is secondary. Pre-alpha; all seed data is hand-scored and labeled `illustrative`. Live at worldview.dhanjit.me (Cloudflare Worker, static assets).
+
+India-frame editorial rules: summaries are hedged characterizations ("has argued…"), culture-war axes stay out of the catalog until extraction provides verbatim receipts (see docs/DESIGN.md "India frame"), and missing positions are omitted, never invented.
 
 ## Commands
 

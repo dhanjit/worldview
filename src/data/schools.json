@@ -2,5 +2,10 @@
   { "id": "real", "label": "Realist", "dot": "#d85a30", "chip": "#993c1d" },
   { "id": "lib", "label": "Liberal internationalist", "dot": "#378add", "chip": "#185fa5" },
   { "id": "res", "label": "Restraint", "dot": "#1d9e75", "chip": "#0f6e56" },
-  { "id": "ind", "label": "Independent analyst", "dot": "#7f77dd", "chip": "#534ab7" }
+  { "id": "ind", "label": "Independent analyst", "dot": "#7f77dd", "chip": "#534ab7" },
+  { "id": "libcon", "label": "Liberal constitutionalist", "dot": "#378add", "chip": "#185fa5" },
+  { "id": "leftprog", "label": "Left-progressive", "dot": "#d4537e", "chip": "#993556" },
+  { "id": "ecolib", "label": "Economic liberal", "dot": "#1d9e75", "chip": "#0f6e56" },
+  { "id": "natcon", "label": "Nationalist right", "dot": "#d85a30", "chip": "#993c1d" },
+  { "id": "strat", "label": "Strategic realist", "dot": "#7f77dd", "chip": "#534ab7" }
 ]

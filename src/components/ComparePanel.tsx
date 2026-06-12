@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { claimFor, expertById, experts, schoolById, topics } from "../lib/data";
+import { claimFor, expertById, expertsFor, schoolById, topicsFor } from "../lib/data";
+
+const DEFAULT_PAIR: Record<string, [string, string]> = {
+  india: ["pbm", "guru"],
+  "us-western": ["mear", "appl"],
+};
 
 function verdict(delta: number): { label: string; cls: string } {
   if (delta <= 20) return { label: "Close", cls: "close" };
@@ -7,9 +12,11 @@ function verdict(delta: number): { label: string; cls: string } {
   return { label: "Opposed", cls: "opposed" };
 }
 
-export default function ComparePanel() {
-  const [a, setA] = useState("mear");
-  const [b, setB] = useState("appl");
+export default function ComparePanel({ frameId }: { frameId: string }) {
+  const pool = expertsFor(frameId);
+  const fallback: [string, string] = [pool[0]?.id ?? "", pool[1]?.id ?? ""];
+  const [a, setA] = useState(DEFAULT_PAIR[frameId]?.[0] ?? fallback[0]);
+  const [b, setB] = useState(DEFAULT_PAIR[frameId]?.[1] ?? fallback[1]);
   const ea = expertById[a];
   const eb = expertById[b];
 
@@ -17,7 +24,7 @@ export default function ComparePanel() {
     <section className="card">
       <div className="cmp-head">
         <select value={a} onChange={(e) => setA(e.currentTarget.value)} aria-label="First expert">
-          {experts.map((x) => (
+          {pool.map((x) => (
             <option key={x.id} value={x.id}>
               {x.name}
             </option>
@@ -25,7 +32,7 @@ export default function ComparePanel() {
         </select>
         <span style={{ fontSize: 12, color: "var(--text-2)" }}>vs</span>
         <select value={b} onChange={(e) => setB(e.currentTarget.value)} aria-label="Second expert">
-          {experts.map((x) => (
+          {pool.map((x) => (
             <option key={x.id} value={x.id}>
               {x.name}
             </option>
@@ -34,10 +41,20 @@ export default function ComparePanel() {
         <span className="cmp-note">circle = left pick, square = right pick</span>
       </div>
 
-      {topics.map((t) => {
+      {topicsFor(frameId).map((t) => {
         const ca = claimFor(a, t.id);
         const cb = claimFor(b, t.id);
-        if (!ca || !cb || ca.score == null || cb.score == null) return null;
+        if (!ca || !cb || ca.score == null || cb.score == null) {
+          return (
+            <div key={t.id} className="cmp-row">
+              <span className="cmp-label">{t.label}</span>
+              <span className="receipt-meta">
+                no indexed position for one of the two
+              </span>
+              <span />
+            </div>
+          );
+        }
         const v = verdict(Math.abs(ca.score - cb.score));
         return (
           <div key={t.id} className="cmp-row">

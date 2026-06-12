@@ -1,4 +1,4 @@
-import { claimFor, experts, schoolById, topics } from "../lib/data";
+import { claimFor, expertsFor, schoolById, topicsFor } from "../lib/data";
 
 const CX = 340;
 const CY = 252;
@@ -12,18 +12,23 @@ function pt(deg: number, r: number): [number, number] {
 }
 
 interface Props {
+  frameId: string;
   topicId: string;
   expertId: string;
   onSelect: (topicId: string, expertId?: string) => void;
 }
 
-export default function Wheel({ topicId, onSelect }: Props) {
+export default function Wheel({ frameId, topicId, onSelect }: Props) {
+  const ts = topicsFor(frameId);
+  const exps = expertsFor(frameId);
+  const span = 360 / ts.length;
+
   return (
     <svg
       viewBox="0 0 680 452"
       width="100%"
       role="img"
-      aria-label="Radial wheel plotting nine experts across five geopolitical topic axes"
+      aria-label={`Radial wheel plotting ${exps.length} experts across ${ts.length} topic axes`}
     >
       {RINGS.map((r) => (
         <circle
@@ -38,8 +43,8 @@ export default function Wheel({ topicId, onSelect }: Props) {
         />
       ))}
 
-      {topics.map((t, i) => {
-        const g = -36 + 72 * i;
+      {ts.map((t, i) => {
+        const g = -(span / 2) + span * i;
         const [x1, y1] = pt(g, 56);
         const [x2, y2] = pt(g, 210);
         return (
@@ -55,9 +60,9 @@ export default function Wheel({ topicId, onSelect }: Props) {
         );
       })}
 
-      {topics.map((t, i) => {
-        const s = -36 + 72 * i + 3;
-        const e = s + 66;
+      {ts.map((t, i) => {
+        const s = -(span / 2) + span * i + 3;
+        const e = -(span / 2) + span * (i + 1) - 3;
         const [x1, y1] = pt(s, 206);
         const [x2, y2] = pt(e, 206);
         const [x3, y3] = pt(e, 58);
@@ -74,11 +79,11 @@ export default function Wheel({ topicId, onSelect }: Props) {
         );
       })}
 
-      {topics.map((t, i) => {
-        const m = 72 * i;
+      {ts.map((t, i) => {
+        const m = (span * i) % 360;
         const [lx, ly] = pt(m, 220);
-        const anchor = m === 0 ? "middle" : m < 180 ? "start" : "end";
-        const dy = m === 0 ? 0 : m === 72 || m === 288 ? 4 : 9;
+        const anchor = m < 10 || m > 350 ? "middle" : m < 180 ? "start" : "end";
+        const dy = m < 10 || m > 350 ? 0 : m <= 90 || m >= 270 ? 4 : 9;
         return (
           <text
             key={t.id}
@@ -93,11 +98,15 @@ export default function Wheel({ topicId, onSelect }: Props) {
         );
       })}
 
-      {topics.flatMap((t, i) =>
-        experts.map((ex, j) => {
+      {ts.flatMap((t, i) =>
+        exps.map((ex, j) => {
           const c = claimFor(ex.id, t.id);
           if (!c || c.score == null) return null;
-          const a = -36 + 72 * i + 9 + ((j + 0.5) / experts.length) * 54;
+          const a =
+            -(span / 2) +
+            span * i +
+            6 +
+            ((j + 0.5) / exps.length) * (span - 12);
           const r = RMIN + (c.score / 100) * (RMAX - RMIN);
           const [cx, cy] = pt(a, r);
           return (

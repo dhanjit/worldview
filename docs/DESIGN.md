@@ -47,6 +47,14 @@ A perspective is **its own wheel** — own questions, own roster, own pole wordi
 
 Person-level synthesis of unsaid views is forbidden, everywhere, including marketing copy.
 
+## India frame (default)
+
+The product is centered on Indian politics: the `india` wheel is the default landing frame, covering the **national blend** — governance, economic model, institutions, and strategic posture (China, US). These are the debates India's public intellectuals actually conduct in print.
+
+**Launch-scope decision (2026-06-12):** the most contested culture-war axes (secularism/Hindutva framing, reservation, UCC) are deliberately **deferred until extraction is real** — publishing hand-scored placeholder positions for living Indian commentators on those axes carries misrepresentation risk that receipts are specifically designed to remove. They join the catalog when every claim carries a verbatim quote, source and date. India's defamation climate (criminal as well as civil) raises the stakes; hedged summaries ("has argued…") and visible `status` labels are mandatory in the meantime.
+
+Roster (launch): Pratap Bhanu Mehta, Ramachandra Guha (liberal constitutionalist); Yogendra Yadav (left-progressive); Swaminathan Aiyar, Surjit Bhalla (economic liberal); S. Gurumurthy (nationalist right); C. Raja Mohan, Shivshankar Menon, Brahma Chellaney (strategic realist). The Institutions axis intentionally has no claims for the strategic trio — no sustained public position found, and silence is data.
+
 ## Axis rubric example — `ukr` (Ukraine endgame)
 
 Score the expert's most recent clearly stated position. Anchors:

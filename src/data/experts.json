@@ -70,5 +70,77 @@
     "school": "ind",
     "wikipedia": "https://en.wikipedia.org/wiki/Niall_Ferguson",
     "wheels": ["us-western"]
+  },
+  {
+    "id": "pbm",
+    "name": "Pratap Bhanu Mehta",
+    "initials": "PM",
+    "school": "libcon",
+    "wikipedia": "https://en.wikipedia.org/wiki/Pratap_Bhanu_Mehta",
+    "wheels": ["india"]
+  },
+  {
+    "id": "guha",
+    "name": "Ramachandra Guha",
+    "initials": "RG",
+    "school": "libcon",
+    "wikipedia": "https://en.wikipedia.org/wiki/Ramachandra_Guha",
+    "wheels": ["india"]
+  },
+  {
+    "id": "yada",
+    "name": "Yogendra Yadav",
+    "initials": "YY",
+    "school": "leftprog",
+    "wikipedia": "https://en.wikipedia.org/wiki/Yogendra_Yadav",
+    "wheels": ["india"]
+  },
+  {
+    "id": "swam",
+    "name": "Swaminathan Aiyar",
+    "initials": "SA",
+    "school": "ecolib",
+    "wikipedia": "https://en.wikipedia.org/wiki/Swaminathan_Aiyar",
+    "wheels": ["india"]
+  },
+  {
+    "id": "bhal",
+    "name": "Surjit Bhalla",
+    "initials": "SB",
+    "school": "ecolib",
+    "wikipedia": "https://en.wikipedia.org/wiki/Surjit_Bhalla",
+    "wheels": ["india"]
+  },
+  {
+    "id": "guru",
+    "name": "S. Gurumurthy",
+    "initials": "SG",
+    "school": "natcon",
+    "wikipedia": "https://en.wikipedia.org/wiki/S._Gurumurthy",
+    "wheels": ["india"]
+  },
+  {
+    "id": "raja",
+    "name": "C. Raja Mohan",
+    "initials": "RM",
+    "school": "strat",
+    "wikipedia": "https://en.wikipedia.org/wiki/C._Raja_Mohan",
+    "wheels": ["india"]
+  },
+  {
+    "id": "meno",
+    "name": "Shivshankar Menon",
+    "initials": "SM",
+    "school": "strat",
+    "wikipedia": "https://en.wikipedia.org/wiki/Shivshankar_Menon",
+    "wheels": ["india"]
+  },
+  {
+    "id": "chel",
+    "name": "Brahma Chellaney",
+    "initials": "BC",
+    "school": "strat",
+    "wikipedia": "https://en.wikipedia.org/wiki/Brahma_Chellaney",
+    "wheels": ["india"]
   }
 ]

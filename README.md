@@ -4,7 +4,9 @@
 
 > Where public experts stand on the big questions — with receipts.
 
-Worldview maps named geopolitics experts' public positions onto comparable axes and renders them as an **opinion wheel**: each sector is one question, center-to-rim traces that question's axis, and every dot is one expert's stance. Click in for the per-topic spectrum, the receipt behind each position, and side-by-side expert comparison.
+Worldview maps named experts' public positions onto comparable axes and renders them as an **opinion wheel**: each sector is one question, center-to-rim traces that question's axis, and every dot is one expert's stance. Click in for the per-topic spectrum, the receipt behind each position, and side-by-side expert comparison.
+
+The product is **centered on Indian politics**: the default wheel covers India's national debates — China posture, US alignment, economic model, institutions, and the 2035 trajectory — argued by nine of India's best-known public intellectuals. A second wheel carries the US/Western debates; each perspective is its own wheel with its own questions and roster, never a filter.
 
 **Status: pre-alpha.** All positions are hand-scored, clearly-labeled placeholders. The extraction pipeline (Wikipedia → Claude → claim records with verbatim quotes, source links and dates) exists but its output has not yet replaced the seed data. Target host: [worldview.dhanjit.me](https://worldview.dhanjit.me).
 

@@ -2,6 +2,12 @@ export type ClaimType = "should" | "is" | "will";
 export type ClaimStatus = "illustrative" | "extracted" | "reviewed";
 export type Confidence = "placeholder" | "low" | "medium" | "high";
 
+export interface Frame {
+  id: string;
+  label: string;
+  tagline: string;
+}
+
 export interface School {
   id: string;
   label: string;
