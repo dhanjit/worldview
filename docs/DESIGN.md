@@ -2,7 +2,7 @@
 
 ## Concept
 
-A public, receipts-backed map of elite geopolitical opinion. Named experts' public positions are extracted into structured **claim records** and rendered as comparable visualizations — starting with an opinion wheel. The differentiators, in order: receipts on every stance, comparability across experts, perspective-explicit framing, and (later) longitudinal accountability for predictions.
+A public, receipts-backed map of elite political opinion — politics in general, not just geopolitics: governance, economy, institutions, and strategic affairs all live in the same catalog as axes with frames. Named experts' public positions are extracted into structured **claim records** and rendered as comparable visualizations — starting with an opinion wheel. The differentiators, in order: receipts on every stance, comparability across experts, perspective-explicit framing, and (later) longitudinal accountability for predictions.
 
 ## The claim record
 
@@ -20,7 +20,7 @@ The atom of the product. Every view is a query over claims; no feature may grow 
 | `saidOn` / `aboutWhen` | Two distinct time dimensions: when it was said vs what period it concerns (`will` only) |
 | `retrievedOn`, `confidence`, `status` | Pipeline provenance; `status`: `illustrative` → `extracted` → `reviewed` |
 
-Position drift over time is data, not noise: when an expert's position changes, add a new claim with a newer `saidOn` — don't overwrite. The newest claim renders; the history feeds the future drift/timeline view.
+Position drift over time is data, not noise: when an expert's position changes, add a new claim with a newer `saidOn` — don't overwrite. **The latest claim is the only one views may render as current** — enforced in code by `claimFor()` (newest by `saidOn`, falling back to `retrievedOn`); `claimHistoryFor()` returns the full trail, newest first, and feeds the future drift/timeline view.
 
 ## Claim types and views
 

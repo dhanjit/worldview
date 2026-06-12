@@ -17,6 +17,7 @@ CI (`.github/workflows/ci.yml`) runs typecheck + build on every push and PR. Kee
 ## Architecture
 
 - The atom is the claim record (`Claim` in [src/lib/types.ts](src/lib/types.ts)): expert × topic × type (`should`/`is`/`will`) × frame, score 0–100 along the topic's axis, summary, verbatim quote, sourceUrl, saidOn vs aboutWhen (two distinct time dimensions), confidence, status (`illustrative` → `extracted` → `reviewed`).
+- Claims are append-only and `claimFor()` returns the LATEST position (newest `saidOn`, fallback `retrievedOn`). A changed mind = a new claim, never an edit; `claimHistoryFor()` is the drift-view query. Never render a non-latest claim as current.
 - Every view is a query over claims. The wheel is should-claims grouped by topic (plus one will-type axis, `ord`). Planned views — state-of-the-world (`is`), per-expert futures (`will`), ask-anything composition — must reuse the store, not grow new models.
 - Data flow: `src/data/*.json` → joins in [src/lib/data.ts](src/lib/data.ts) → components ([Wheel](src/components/Wheel.tsx), [TopicPanel](src/components/TopicPanel.tsx), [ComparePanel](src/components/ComparePanel.tsx)).
 - No UI framework beyond React; hand-rolled CSS in [src/styles.css](src/styles.css) with light/dark via `prefers-color-scheme`. Keep the bundle lean.

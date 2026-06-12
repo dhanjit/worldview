@@ -34,15 +34,35 @@ export function schoolsFor(frameId: string): School[] {
   return schools.filter((s) => present.has(s.id));
 }
 
-/** The claim an expert holds on a topic, matching the topic's claim type and frame. */
-export function claimFor(expertId: string, topicId: string): Claim | undefined {
+function recency(c: Claim): string {
+  return c.saidOn ?? c.retrievedOn;
+}
+
+/**
+ * Every recorded position an expert has held on a topic, newest first.
+ * Claims are append-only: a changed mind is a new claim with a newer saidOn,
+ * never an overwrite. This is the query behind the future drift/timeline view.
+ */
+export function claimHistoryFor(expertId: string, topicId: string): Claim[] {
   const topic = topicById[topicId];
-  if (!topic) return undefined;
-  return claims.find(
-    (c) =>
-      c.expertId === expertId &&
-      c.topicId === topicId &&
-      c.type === topic.type &&
-      c.frame === topic.frame,
-  );
+  if (!topic) return [];
+  return claims
+    .filter(
+      (c) =>
+        c.expertId === expertId &&
+        c.topicId === topicId &&
+        c.type === topic.type &&
+        c.frame === topic.frame,
+    )
+    .sort(
+      (a, b) =>
+        recency(b).localeCompare(recency(a)) ||
+        b.retrievedOn.localeCompare(a.retrievedOn) ||
+        a.id.localeCompare(b.id),
+    );
+}
+
+/** The expert's LATEST position on a topic — the only claim views may render as current. */
+export function claimFor(expertId: string, topicId: string): Claim | undefined {
+  return claimHistoryFor(expertId, topicId)[0];
 }

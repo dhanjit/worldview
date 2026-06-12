@@ -1,4 +1,4 @@
-import { claimFor, expertById, expertsFor, schoolById, topicById, topicsFor } from "../lib/data";
+import { claimFor, claimHistoryFor, expertById, expertsFor, schoolById, topicById, topicsFor } from "../lib/data";
 
 interface Props {
   frameId: string;
@@ -91,8 +91,12 @@ export default function TopicPanel({ frameId, topicId, expertId, onTopic, onExpe
             <a href={selected.sourceUrl} target="_blank" rel="noreferrer">
               Wikipedia — views section
             </a>{" "}
-            · retrieved {selected.retrievedOn} · status: {selected.status}
+            {selected.saidOn ? `· said ${selected.saidOn} ` : ""}· retrieved{" "}
+            {selected.retrievedOn} · status: {selected.status}
             {selected.quote == null ? " (no verbatim quote yet)" : ""}
+            {claimHistoryFor(expertId, topicId).length > 1
+              ? ` · latest of ${claimHistoryFor(expertId, topicId).length} recorded positions`
+              : ""}
           </div>
         </div>
       ) : (
