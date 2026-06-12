@@ -8,7 +8,7 @@ Worldview maps named experts' public positions onto comparable axes and renders 
 
 The product is **centered on Indian politics**: the default wheel covers India's national debates — China posture, US alignment, economic model, institutions, and the 2035 trajectory — argued by nine of India's best-known public intellectuals. A second wheel carries the US/Western debates; each perspective is its own wheel with its own questions and roster, never a filter.
 
-**Status: pre-alpha.** All positions are hand-scored, clearly-labeled placeholders. The extraction pipeline (Wikipedia → Claude → claim records with verbatim quotes, source links and dates) exists but its output has not yet replaced the seed data. Target host: [worldview.dhanjit.me](https://worldview.dhanjit.me).
+**Status: pre-alpha.** All positions are hand-scored, clearly-labeled placeholders. The extraction pipeline (Wikipedia → LLM via [OpenRouter](https://openrouter.ai) → claim records with verbatim quotes, source links and dates) exists but its output has not yet replaced the seed data. The model is a one-variable swap (`EXTRACT_MODEL`) — the pipeline is deliberately provider-agnostic. Live at [worldview.dhanjit.me](https://worldview.dhanjit.me).
 
 ## Quick start
 
@@ -23,7 +23,7 @@ npm run dev
 | `npm run build` | Production build to `dist/` |
 | `npm run preview` | Serve the production build locally |
 | `npm run typecheck` | TypeScript, strict mode |
-| `npm run extract -- "John Mearsheimer"` | Fetch an expert's Wikipedia views sections; with `ANTHROPIC_API_KEY` set, extract claim records to `data/extracted/` |
+| `npm run extract -- "John Mearsheimer"` | Fetch an expert's Wikipedia views sections; with `OPENROUTER_API_KEY` set, extract claim records to `data/extracted/` (model via `EXTRACT_MODEL`, default `anthropic/claude-opus-4.8`) |
 
 ## How it works
 

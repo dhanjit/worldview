@@ -2,10 +2,12 @@
 /**
  * Worldview extraction pipeline (v1).
  *
- * Wikipedia "views" sections → Claude (structured outputs) → validated claim
- * records in data/extracted/. Every claim passes through two mechanical guards
- * before staging:
- *   1. Schema enforcement — the API is constrained to the claim JSON schema.
+ * Wikipedia "views" sections → LLM via OpenRouter → validated claim records
+ * in data/extracted/. Every claim passes through two mechanical guards before
+ * staging:
+ *   1. Schema enforcement — the request is constrained to the claim JSON
+ *      schema (response_format json_schema, routed only to providers that
+ *      support it via require_parameters).
  *   2. Verbatim-quote guard — a quote that is not a substring of the fetched
  *      source text is nulled and its confidence downgraded. Quotes are never
  *      trusted on the model's word.
@@ -13,9 +15,11 @@
  * Usage:
  *   node scripts/extract.mjs "John Mearsheimer"
  *
- * Reads ANTHROPIC_API_KEY from the environment or worldview/.env. Without a
+ * Reads OPENROUTER_API_KEY from the environment or worldview/.env. Without a
  * key it performs the Wikipedia fetch only, so data plumbing stays testable.
- * Model defaults to claude-opus-4-8; override with CLAUDE_MODEL.
+ * Model defaults to anthropic/claude-opus-4.8; override with EXTRACT_MODEL
+ * (e.g. deepseek/deepseek-v4-pro, qwen/qwen3.7-max) — the provider seam is
+ * this one env var.
  */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -30,7 +34,7 @@ try {
 const WIKI_API = "https://en.wikipedia.org/w/api.php";
 const HEADERS = { "User-Agent": "WorldviewBot/0.1 (+https://worldview.dhanjit.me)" };
 const SECTION_RE = /(view|position|politic|foreign|opinion|thought|stance|ideolog|career)/i;
-const MODEL = process.env.CLAUDE_MODEL || "claude-opus-4-8";
+const MODEL = process.env.EXTRACT_MODEL || "anthropic/claude-opus-4.8";
 
 async function wiki(params) {
   const url = new URL(WIKI_API);
@@ -147,19 +151,31 @@ function validateClaims(raw, sections, topics) {
   return { claims, issues };
 }
 
-async function extractWithClaude(prompt) {
-  const { default: Anthropic } = await import("@anthropic-ai/sdk");
-  const client = new Anthropic();
-  const response = await client.messages.create({
+async function extractWithLLM(prompt) {
+  const { default: OpenAI } = await import("openai");
+  const client = new OpenAI({
+    baseURL: "https://openrouter.ai/api/v1",
+    apiKey: process.env.OPENROUTER_API_KEY,
+    defaultHeaders: {
+      "HTTP-Referer": "https://worldview.dhanjit.me",
+      "X-Title": "Worldview",
+    },
+  });
+  const response = await client.chat.completions.create({
     model: MODEL,
     max_tokens: 16000,
-    thinking: { type: "adaptive" },
-    output_config: { format: { type: "json_schema", schema: CLAIMS_SCHEMA } },
     messages: [{ role: "user", content: prompt }],
+    response_format: {
+      type: "json_schema",
+      json_schema: { name: "claims", strict: true, schema: CLAIMS_SCHEMA },
+    },
+    // OpenRouter extension: only route to providers that honor response_format
+    provider: { require_parameters: true },
   });
-  const text = response.content.find((b) => b.type === "text")?.text;
-  if (!text) throw new Error("No text block in model response");
-  return JSON.parse(text).claims;
+  const text = response.choices[0]?.message?.content;
+  if (!text) throw new Error("Empty completion from model");
+  const fenced = text.match(/```json\s*([\s\S]*?)```/);
+  return JSON.parse(fenced ? fenced[1] : text).claims;
 }
 
 async function main() {
@@ -179,8 +195,8 @@ async function main() {
     console.log(`  [L${s.level}] ${s.heading} — ${s.wikitext.length.toLocaleString()} chars`);
   }
 
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.log("\nANTHROPIC_API_KEY not set — stopping after the Wikipedia fetch.");
+  if (!process.env.OPENROUTER_API_KEY) {
+    console.log("\nOPENROUTER_API_KEY not set — stopping after the Wikipedia fetch.");
     console.log("Set it in worldview/.env to run claim extraction.");
     return;
   }
@@ -188,8 +204,8 @@ async function main() {
   const topics = JSON.parse(
     await readFile(new URL("../src/data/topics.json", import.meta.url), "utf8"),
   );
-  console.log(`\nExtracting claims with ${MODEL} (structured outputs)...`);
-  const raw = await extractWithClaude(buildPrompt(pageTitle, sections, topics));
+  console.log(`\nExtracting claims with ${MODEL} via OpenRouter (structured outputs)...`);
+  const raw = await extractWithLLM(buildPrompt(pageTitle, sections, topics));
   const { claims, issues } = validateClaims(raw, sections, topics);
   for (const i of issues) console.warn(`  ⚠ ${i}`);
 
