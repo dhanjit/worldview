@@ -2,7 +2,7 @@ import { useState } from "react";
 import { claimFor, expertById, expertsFor, schoolById, topicsFor } from "../lib/data";
 
 const DEFAULT_PAIR: Record<string, [string, string]> = {
-  india: ["pbm", "guru"],
+  india: ["chel", "swam"],
   "us-western": ["mear", "appl"],
 };
 

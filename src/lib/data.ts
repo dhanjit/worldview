@@ -34,6 +34,11 @@ export function schoolsFor(frameId: string): School[] {
   return schools.filter((s) => present.has(s.id));
 }
 
+/** A frame is "real" once its claims are extracted/reviewed rather than illustrative placeholders. */
+export function frameIsReal(frameId: string): boolean {
+  return claims.some((c) => c.frame === frameId && c.status !== "illustrative");
+}
+
 function recency(c: Claim): string {
   return c.saidOn ?? c.retrievedOn;
 }

@@ -15,10 +15,13 @@ export default function Methodology() {
         explicit one.
       </p>
       <p>
-        <strong>Current status: pre-alpha.</strong> Every position shown today
-        is a hand-scored, clearly-labeled placeholder ("status: illustrative")
-        pending automated extraction with verbatim quotes. Treat the dots as a
-        demonstration of the product, not as settled characterizations.
+        <strong>Current status: pre-alpha.</strong> The India wheel now shows
+        positions extracted from each expert's own columns — every dot carries a
+        verbatim quote, a source link and a date ("status: extracted";
+        machine-extracted and quote-verified, not yet hand-reviewed). Coverage
+        is uneven and honest: an expert has dots only where they have actually
+        written. The US/Western wheel still shows hand-scored illustrative
+        placeholders, labelled as such per claim.
       </p>
 
       <h2>How a position becomes a dot</h2>

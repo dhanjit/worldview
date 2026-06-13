@@ -3,7 +3,7 @@ import Wheel from "./components/Wheel";
 import TopicPanel from "./components/TopicPanel";
 import ComparePanel from "./components/ComparePanel";
 import Methodology from "./components/Methodology";
-import { frames, schoolsFor } from "./lib/data";
+import { frames, frameIsReal, schoolsFor } from "./lib/data";
 
 const DEFAULTS: Record<string, { topic: string; expert: string }> = {
   india: { topic: "chn-in", expert: "chel" },
@@ -42,7 +42,11 @@ export default function App() {
           <p className="tagline">{frame.tagline}</p>
         </div>
         <div className="header-side">
-          <span className="badge badge-warn">pre-alpha · illustrative data</span>
+          {frameIsReal(frameId) ? (
+            <span className="badge badge-info">pre-alpha · extracted from sources</span>
+          ) : (
+            <span className="badge badge-warn">pre-alpha · illustrative data</span>
+          )}
           {view === "wheel" ? (
             <a className="header-link" href="#methodology">
               methodology &amp; corrections
@@ -111,9 +115,10 @@ export default function App() {
       )}
 
       <footer className="footer">
-        All positions are hand-scored placeholders for now — after extraction
-        lands, every dot carries a verbatim quote, source link and as-of date.
-        Source text comes from Wikipedia (CC BY-SA 4.0).{" "}
+        {frameIsReal(frameId)
+          ? "Each dot is extracted from the expert's own columns — verbatim quote, source link and date on every receipt (status shown per claim). Where a dot is absent, no public position was found."
+          : "This wheel still shows hand-scored illustrative placeholders, clearly labelled per claim."}{" "}
+        Source text: Wikipedia (CC BY-SA 4.0) and each expert's linked op-eds.{" "}
         <a href="#methodology">Methodology &amp; corrections</a> ·{" "}
         <a
           href="https://github.com/dhanjit/worldview"

@@ -97,6 +97,11 @@ h1 {
   color: var(--warn-text);
 }
 
+.badge-info {
+  background: var(--ok-bg);
+  color: var(--ok-text);
+}
+
 .legend {
   display: flex;
   flex-wrap: wrap;
@@ -252,6 +257,16 @@ h1 {
   font-size: 14px;
   line-height: 1.6;
   margin: 0 0 8px;
+}
+
+.receipt-quote {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text);
+  border-left: 2px solid var(--ring);
+  margin: 0 0 8px;
+  padding: 2px 0 2px 12px;
 }
 
 .receipt-meta {

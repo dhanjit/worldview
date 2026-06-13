@@ -1,5 +1,16 @@
 import { claimFor, claimHistoryFor, expertById, expertsFor, schoolById, topicById, topicsFor } from "../lib/data";
 
+/** Human-readable source label from a URL — "indianexpress.com", "Wikipedia", etc. */
+function sourceHost(url: string): string {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+    if (host.endsWith("wikipedia.org")) return "Wikipedia";
+    return host;
+  } catch {
+    return "source";
+  }
+}
+
 interface Props {
   frameId: string;
   topicId: string;
@@ -87,15 +98,18 @@ export default function TopicPanel({ frameId, topicId, expertId, onTopic, onExpe
             </span>
           </div>
           <p className="receipt-summary">{selected.summary}</p>
+          {selected.quote && (
+            <blockquote className="receipt-quote">“{selected.quote}”</blockquote>
+          )}
           <div className="receipt-meta">
             <a href={selected.sourceUrl} target="_blank" rel="noreferrer">
-              Wikipedia — views section
+              {sourceHost(selected.sourceUrl)}
             </a>{" "}
             {selected.saidOn ? `· said ${selected.saidOn} ` : ""}· retrieved{" "}
             {selected.retrievedOn} · status: {selected.status}
-            {selected.quote == null ? " (no verbatim quote yet)" : ""}
+            {selected.quote == null ? " · no verbatim quote" : ""}
             {claimHistoryFor(expertId, topicId).length > 1
-              ? ` · latest of ${claimHistoryFor(expertId, topicId).length} recorded positions`
+              ? ` · latest of ${claimHistoryFor(expertId, topicId).length} dated positions`
               : ""}
           </div>
         </div>
