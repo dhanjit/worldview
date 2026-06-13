@@ -1,8 +1,10 @@
 # CLAUDE.md
 
+> **Resuming work? Read [docs/ROADMAP.md](docs/ROADMAP.md) first** — current status, the exact pipeline commands, and the prioritized next gaps (fill 4 unsourced India experts, US-alignment coverage, us-western real extraction, new views).
+
 ## What this is
 
-Worldview — a public site mapping named experts' positions onto comparable axes, rendered as an opinion wheel with per-topic spectra, receipts, and side-by-side comparison. **Centered on Indian politics**: the `india` frame is the default wheel (national blend — governance, economy, institutions, strategic posture); `us-western` is secondary. Pre-alpha; all seed data is hand-scored and labeled `illustrative`. Live at worldview.dhanjit.me (Cloudflare Worker, static assets).
+Worldview — a public site mapping named experts' positions onto comparable axes, rendered as an opinion wheel with per-topic spectra, receipts, and side-by-side comparison. **Centered on Indian politics**: the `india` frame is the default wheel (national blend — governance, economy, institutions, strategic posture); `us-western` is secondary. The India wheel is now **real** (claims extracted from experts' op-eds, status `extracted`, every dot quote-backed); the US/Western wheel is still `illustrative`. Live at worldview.dhanjit.me (Cloudflare Worker, static assets).
 
 India-frame editorial rules: summaries are hedged characterizations ("has argued…"), culture-war axes stay out of the catalog until extraction provides verbatim receipts (see docs/DESIGN.md "India frame"), and missing positions are omitted, never invented.
 
