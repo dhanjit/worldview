@@ -65,14 +65,16 @@ async function wiki(params) {
 }
 
 async function getViewsSections(title) {
-  const meta = await wiki({ action: "parse", page: title, prop: "sections" });
+  // redirects:1 follows page redirects (e.g. "C. Raja Mohan" → its canonical title).
+  const meta = await wiki({ action: "parse", page: title, prop: "sections", redirects: "1" });
+  const canonical = meta.parse.title;
   const sections = meta.parse.sections.filter((s) => SECTION_RE.test(s.line));
   const out = [];
   for (const s of sections) {
-    const data = await wiki({ action: "parse", page: title, prop: "wikitext", section: s.index });
+    const data = await wiki({ action: "parse", page: canonical, prop: "wikitext", section: s.index });
     out.push({ heading: s.line, level: s.level, wikitext: data.parse.wikitext });
   }
-  return { pageTitle: meta.parse.title, sections: out };
+  return { pageTitle: canonical, sections: out };
 }
 
 const CLAIMS_SCHEMA = {
@@ -217,9 +219,32 @@ async function main() {
     return;
   }
 
-  const topics = JSON.parse(
+  const allTopics = JSON.parse(
     await readFile(new URL("../src/data/topics.json", import.meta.url), "utf8"),
   );
+  const experts = JSON.parse(
+    await readFile(new URL("../src/data/experts.json", import.meta.url), "utf8"),
+  );
+  // An expert may only be scored on axes belonging to a frame they appear on —
+  // otherwise the model picks a same-topic axis from the wrong frame (e.g. an
+  // India expert scored on the US-Western China axis), producing orphan claims
+  // that never render on that expert's wheel.
+  // Match on display name or the expert's actual Wikipedia page title — bylines
+  // ("C. Raja Mohan") and page titles ("Raja Mohan") often differ.
+  const pageOf = (e) =>
+    decodeURIComponent((e.wikipedia.split("/wiki/")[1] || "")).replace(/_/g, " ");
+  const expert = experts.find(
+    (e) => e.name === title || e.name === pageTitle || pageOf(e) === title || pageOf(e) === pageTitle,
+  );
+  const topics = expert
+    ? allTopics.filter((t) => expert.wheels.includes(t.frame))
+    : allTopics;
+  if (!expert) {
+    console.warn(`  ⚠ "${pageTitle}" not in experts.json — scoring against all frames; add them and re-run for frame-correct axes.`);
+  } else {
+    console.log(`  frames: ${expert.wheels.join(", ")} → ${topics.length} axes`);
+  }
+
   console.log(`\nExtracting claims with ${MODEL} via OpenRouter (structured outputs)...`);
   const raw = await extractWithLLM(buildPrompt(pageTitle, sections, topics));
   const { claims, issues } = validateClaims(raw, sections, topics);
@@ -249,5 +274,7 @@ async function main() {
 
 main().catch((err) => {
   console.error(err.message ?? err);
-  process.exit(1);
+  // Set exitCode rather than process.exit() — an abrupt exit while a fetch
+  // socket is still closing trips a libuv assertion on Windows (exit 0xC0000409).
+  process.exitCode = 1;
 });
