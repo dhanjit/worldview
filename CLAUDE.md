@@ -10,7 +10,7 @@ India-frame editorial rules: summaries are hedged characterizations ("has argued
 
 - `npm run dev` / `npm run build` / `npm run preview`
 - `npm run typecheck` — strict TS, no emit
-- `npm run extract -- "<Wikipedia Page Title>"` — Wikipedia fetch always; LLM extraction when `OPENROUTER_API_KEY` resolves (env var → `.env` → Windows DPAPI vault via `npm run secret:set`, preferred — encrypted at rest, no plaintext file); writes to `data/extracted/` (gitignored, review before promoting into `src/data/claims.json`). Extraction routes through OpenRouter by owner decision — keep the pipeline provider-agnostic; the model is `EXTRACT_MODEL` (default `anthropic/claude-opus-4.8`; cheap swaps: `deepseek/deepseek-v4-pro`, `qwen/qwen3.7-max`). Never hard-wire a single provider's SDK into the pipeline.
+- `npm run extract -- "<Wikipedia Page Title>"` — Wikipedia fetch always; LLM extraction when `OPENROUTER_API_KEY` resolves (env var → `.env` → Windows DPAPI vault via `npm run secret:set`). Preferred: `infisical run -- npm run extract -- "…"` — injects the key from the Infisical vault (`.infisical.json` at the Code root); DPAPI store is the offline fallback; writes to `data/extracted/` (gitignored, review before promoting into `src/data/claims.json`). Extraction routes through OpenRouter by owner decision — keep the pipeline provider-agnostic; the model is `EXTRACT_MODEL` (default `anthropic/claude-opus-4.8`; cheap swaps: `deepseek/deepseek-v4-pro`, `qwen/qwen3.7-max`). Never hard-wire a single provider's SDK into the pipeline.
 
 CI (`.github/workflows/ci.yml`) runs typecheck + build on every push and PR. Keep both green.
 

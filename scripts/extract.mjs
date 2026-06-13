@@ -32,8 +32,10 @@ try {
   // no .env — environment variables may still be set externally
 }
 
-// Key resolution order: explicit env var > .env (above) > Windows DPAPI vault
-// (scripts/secret.ps1, stored via `npm run secret:set` — no plaintext on disk).
+// Key resolution order: explicit env var > .env (above) > Windows DPAPI vault.
+// Recommended: `infisical run -- npm run extract -- "Name"` — Infisical injects
+// OPENROUTER_API_KEY as an env var, taking the top of this chain. The DPAPI
+// vault (scripts/secret.ps1, `npm run secret:set`) is the offline fallback.
 if (!process.env.OPENROUTER_API_KEY && process.platform === "win32") {
   const r = spawnSync(
     "powershell.exe",
