@@ -80,12 +80,17 @@ Every axis added to the catalog needs a rubric of this form before any claim is 
 | --- | --- |
 | Misrepresenting a living person | Receipts on every dot; verbatim quotes; visible `status`/`confidence`; conservative `null` over guessed scores |
 | Axis framing bias | Hand-curated axes with published rubrics; perspective-explicit wheels; this document is public |
-| Staleness (Wikipedia lags news) | Honest `retrievedOn`; v2 adds primary feeds; drift becomes a feature (timeline view) |
+| Staleness (Wikipedia lags news) | Op-ed source carries real `saidOn` dates; drift becomes a feature (timeline view) |
+| Republishing copyrighted op-eds | Store only short quote + summary + link + date, never the body; respect robots.txt; rate-limit |
 | Roster selection bias | Published criteria + panel composition; per-wheel rosters |
 | English-Wikipedia Anglosphere skew | Acknowledged; non-English Wikipedias planned for non-Western rosters |
 
 ## Data sources
 
-- **Wikipedia (cold start).** Pundit pages keep curated "Views" sections where claims arrive pre-cited to primary sources — the receipts come free. CC BY-SA 4.0: attribute, quote verbatim, link back.
+The extraction pipeline (`scripts/extract.mjs`) is **source-agnostic**: one core (prompt → LLM via OpenRouter → schema enforcement → verbatim-quote guard → frame/type validation) behind pluggable source adapters. Run with `--source wikipedia` (default) or `--source oped`.
+
+- **Wikipedia (cold start).** Pundit pages keep curated "Views" sections where claims arrive pre-cited to primary sources. CC BY-SA 4.0: attribute, quote verbatim, link back. **Finding (2026-06-13):** mechanically sound but too thin for Indian intellectuals — a 9-expert run yielded 6 claims, only 2 quote-backed; the pages are biographical, not position-cataloged. Wikipedia stays the roster/cold-start source, not the claim source.
+- **Op-eds / columns (primary, v2).** Each expert's columns (`scripts/data/sources.json` maps expert id → URLs), fetched via Readability, mined by the same core. Materially better: a real op-ed produced verbatim-quoted, dated, primary-sourced claims where Wikipedia produced quote-less inferences. This is the source that makes receipts real. Source acquisition (populating `sources.json`) is the ongoing work; author feeds / search discovery can automate it later.
 - **Wikidata** (roster expansion via occupation/notability queries) — later.
-- **Primary feeds** (op-eds, podcast transcripts, books) — v2; required for fresh `will` claims and the accountability ledger.
+
+**Legal posture for copyrighted sources (op-eds).** Unlike Wikipedia's CC BY-SA, columns are copyrighted. The pipeline fetches an article into memory, extracts a short verbatim quote + neutral summary + URL + date, and **never persists the article body** — short attributed quotation for comparison/criticism (fair dealing §52 / fair use), not republication. `robots.txt` is respected and requests are rate-limited per host. Paywalled sources yield only their public teaser (still often enough for one quoted claim).

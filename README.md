@@ -23,8 +23,9 @@ npm run dev
 | `npm run build` | Production build to `dist/` |
 | `npm run preview` | Serve the production build locally |
 | `npm run typecheck` | TypeScript, strict mode |
-| `infisical run -- npm run extract -- "John Mearsheimer"` | Recommended. Infisical injects `OPENROUTER_API_KEY`; extracts claim records to `data/extracted/` (model via `EXTRACT_MODEL`, default `anthropic/claude-opus-4.8`) |
-| `npm run extract -- "John Mearsheimer"` | Same, when the key is supplied another way (see resolution order below) |
+| `infisical run -- npm run extract -- "C. Raja Mohan"` | Recommended. Extract from the expert's Wikipedia views sections to `data/extracted/<id>.wikipedia.json` (model via `EXTRACT_MODEL`, default `anthropic/claude-opus-4.8`) |
+| `infisical run -- npm run extract -- --source oped "C. Raja Mohan"` | Extract from the expert's op-ed columns (`scripts/data/sources.json`) — the richer, quote-backed source. Bodies are never persisted |
+| `npm run extract -- "C. Raja Mohan"` | Same, when the key is supplied another way (see resolution order below) |
 | `npm run secret:set` / `secret:clear` | Offline fallback: store/remove `OPENROUTER_API_KEY` encrypted at rest (Windows DPAPI, CurrentUser) — no plaintext file |
 
 **Secret resolution order:** environment variable (what `infisical run` injects) → `.env` → Windows DPAPI vault. Secrets live in Infisical; the local vault and `.env` are fallbacks for offline runs.
