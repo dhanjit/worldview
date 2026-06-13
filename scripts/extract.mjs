@@ -112,7 +112,7 @@ function buildPrompt({ sourceKind, sourceLabel, documents, topics }) {
   const text = documents.map((d) => `== ${d.title} ==\n${d.text}`).join("\n\n");
   const sourceNote =
     sourceKind === "oped"
-      ? `The text below is an op-ed/column written BY the expert — every sentence is their own stated view. Use the op-ed's URL as sourceUrl unless the text cites another source for the specific claim.`
+      ? `The text below is an op-ed/column written BY the expert — every sentence is their own stated view. Quote verbatim from it. The source URL is this op-ed itself (the pipeline sets it); do not use any other URL mentioned inside the text.`
       : `The text below is from Wikipedia (CC BY-SA 4.0). Wikitext <ref> tags near a claim usually hold the primary source — put that URL in sourceUrl when present, else leave sourceUrl null.`;
   return `You are extracting structured claims for Worldview, a site that maps named experts' public positions with receipts.
 
@@ -139,7 +139,7 @@ function normalize(s) {
   return s.replace(/\s+/g, " ").trim().toLowerCase();
 }
 
-function validateClaims(raw, topics, sourceText, { defaultSourceUrl, defaultDate }) {
+function validateClaims(raw, topics, sourceText, { defaultSourceUrl, defaultDate, forceSourceUrl }) {
   const topicById = Object.fromEntries(topics.map((t) => [t.id, t]));
   const haystack = normalize(sourceText);
   const issues = [];
@@ -164,7 +164,10 @@ function validateClaims(raw, topics, sourceText, { defaultSourceUrl, defaultDate
       c.quote = null;
       c.confidence = "low";
     }
-    if (!c.sourceUrl) c.sourceUrl = defaultSourceUrl;
+    // Op-ed mode: the receipt must link the op-ed we actually fetched, not a
+    // URL the model lifted from inside the text. Wikipedia mode keeps the
+    // model's primary-citation URL when it supplies one.
+    if (forceSourceUrl || !c.sourceUrl) c.sourceUrl = defaultSourceUrl;
     if (!c.saidOn && defaultDate) c.saidOn = defaultDate;
     claims.push(c);
   }
@@ -318,6 +321,7 @@ async function main() {
       topics,
       defaultSourceUrl: doc.url,
       defaultDate: doc.date,
+      forceSourceUrl: true,
     });
     all.push(...claims);
     if (i < urls.length - 1) await sleep(2000); // politeness between hosts
